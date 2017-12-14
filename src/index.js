@@ -35,7 +35,8 @@ socket.on('id', id => {
 
 // 当一个新用户连接时，发起一个请求到该用户
 socket.on('userAdd', id => {
-  createConnect(id).then(({ pc, stream }) => {
+  createConnect(id)
+  .then(({ pc, stream }) => {
     connects[id] = pc
     pc.addStream(stream)
 
@@ -57,6 +58,11 @@ socket.on('userAdd', id => {
 })
 
 socket.on('userRemove', id => {
+  if (!connects[id]) {
+    return
+  }
+
+  connects[id].close()
   delete connects[id]
   removeVideo(id)
 })
@@ -70,21 +76,21 @@ socket.on('offer', data => {
     pc.addStream(stream)
 
     pc.setRemoteDescription(data.offer)
-      .then(() => {
-        return pc.createAnswer()
+    .then(() => {
+      return pc.createAnswer()
+    })
+    .then(answer => {
+      return pc.setLocalDescription(answer).then(() => {
+        return answer
       })
-      .then(answer => {
-        return pc.setLocalDescription(answer).then(() => {
-          return answer
-        })
+    })
+    .then(answer => {
+      socket.emit('answer', {
+        id,
+        answer
       })
-      .then(answer => {
-        socket.emit('answer', {
-          id,
-          answer
-        })
-      })
-      .catch(onerror)
+    })
+    .catch(onerror)
   })
 })
 

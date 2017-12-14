@@ -14,5 +14,7 @@ export const addVideo = ({ id, stream }) => {
 export const removeVideo = id => {
   const video = document.getElementById(`video-${id}`)
 
-  video.remove()
+  if (video) {
+    video.remove()
+  }
 }
