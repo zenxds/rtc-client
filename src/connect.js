@@ -1,5 +1,6 @@
 import socket from './socket'
 import { addVideo } from './util'
+import { VIDEO_WIDTH, VIDEO_HEIGHT } from './constant'
 
 export const createConnect = targetId => {
   const pc = new RTCPeerConnection()
@@ -29,7 +30,10 @@ export const createConnect = targetId => {
   }
 
   return navigator.mediaDevices.getUserMedia({
-    video: true,
+    video: {
+      width: VIDEO_WIDTH,
+      height: VIDEO_HEIGHT
+    },
     audio: true
   })
   .then(stream => {
