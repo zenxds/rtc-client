@@ -17,7 +17,6 @@ import './less/styles.less'
 
 const connects = {}
 
-// 本socket在服务端的id标识
 socket.on('connect', () => {
 
   navigator.mediaDevices.getUserMedia({
