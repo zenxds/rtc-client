@@ -12,7 +12,7 @@ import 'webrtc-adapter'
 import socket from './socket'
 import { createConnect } from './connect'
 import { addVideo, removeVideo } from './util'
-import { VIDEO_WIDTH, VIDEO_HEIGHT } from './constant'
+import { VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_FRAME_RATE } from './constant'
 import './less/styles.less'
 
 const connects = {}
@@ -20,7 +20,11 @@ const connects = {}
 socket.on('connect', () => {
 
   navigator.mediaDevices.getUserMedia({
-    video: { width: VIDEO_WIDTH, height: VIDEO_HEIGHT },
+    video: {
+      // frameRate: VIDEO_FRAME_RATE,
+      width: VIDEO_WIDTH,
+      height: VIDEO_HEIGHT
+    },
     audio: true
   })
   .then(stream => {
