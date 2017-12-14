@@ -18,8 +18,7 @@ import './less/styles.less'
 const connects = {}
 
 // 本socket在服务端的id标识
-socket.on('id', id => {
-  socket.uniqueId = id
+socket.on('connect', () => {
 
   navigator.mediaDevices.getUserMedia({
     video: { width: VIDEO_WIDTH, height: VIDEO_HEIGHT },
@@ -68,6 +67,7 @@ socket.on('userRemove', id => {
 })
 
 socket.on('offer', data => {
+  // 一开始加入时其他机器会请求，该id为其他机器的socket id
   const id = data.id
 
   createConnect(id)
