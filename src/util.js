@@ -18,3 +18,22 @@ export const removeVideo = id => {
     video.remove()
   }
 }
+
+let mediaStream = null
+export const getUserMedia = () => {
+  if (mediaStream) {
+    return Promise.resolve(mediaStream)
+  }
+
+  return navigator.mediaDevices.getUserMedia({
+    video: {
+      // frameRate: VIDEO_FRAME_RATE,
+      width: VIDEO_WIDTH,
+      height: VIDEO_HEIGHT
+    },
+    audio: true
+  }).then(stream => {
+    mediaStream = stream
+    return stream
+  })
+}

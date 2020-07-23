@@ -1,12 +1,12 @@
 import socket from './socket'
-import { addVideo } from './util'
-import { VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_FRAME_RATE } from './constant'
+import { addVideo, getUserMedia } from './util'
 
 export const createConnect = targetId => {
   const pc = new RTCPeerConnection()
 
   /**
    * The handler is run when network candidates become available
+   * 只要本地代理ICE 需要通过信令服务器传递信息给其他对等端时就会触发
    */
   pc.onicecandidate = event => {
     if (!event.candidate) {
@@ -29,15 +29,7 @@ export const createConnect = targetId => {
     })
   }
 
-  return navigator.mediaDevices.getUserMedia({
-    video: {
-      // frameRate: VIDEO_FRAME_RATE,
-      width: VIDEO_WIDTH,
-      height: VIDEO_HEIGHT
-    },
-    audio: true
-  })
-  .then(stream => {
+  return getUserMedia().then(stream => {
     return {
       stream,
       pc
